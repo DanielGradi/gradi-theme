@@ -7,52 +7,47 @@
 <!-- eslint-enable max-len -->
 
 {% render 'product-media'
-  product: product,
-  direction: 1
-%}
+ product: product
+ , direction: 1
+ %}
 
 <div class="main-product__detail">
   <h1>
     {{ product.title }}
+
+    {{ product.selected_or_first_available_variant.id }}
   </h1>
 
   {% render 'price'
-    compare_at_price: compare_at_price,
-    price: price
-  %}
+   compare_at_price: compare_at_price
+   , price: price
+   %}
 
-  <input
-    type="hidden"
-    name="available"
-    value="{{ available }}"
-  />
+  <input type="hidden" name="available" value="{{ available }}"/>
 
   <p>
     {{ product.description }}
   </p>
-  <form
-    data-product="{{ product.id }}"
-    action="/cart/add"
-  >
+  <form data-product="{{ product.id }}" action="/cart/add" data-test="{{ product.variant.id }}">
 
     {% render 'variants-form'
-      product: product,
-      option_radio: 'Color'
-    %}
+     product: product
+     , option_radio: 'Color'
+     %}
 
     {% render 'button-add-cart'
-      btn_type: 'btn-2',
-      class: 'btn-add-to-cart',
-      available: available
-    %}
+     btn_type: 'btn-2'
+     , class: 'btn-add-to-cart'
+     , available: available
+     %}
 
   </form>
 </div>
 
 {% schema %}
-{
-  "name": "Product page",
-  "class": "main-product wrapper product-js",
-  "tag": "section"
-}
+  {
+    "name": "Product page",
+    "class": "main-product wrapper product-js",
+    "tag": "section"
+  }
 {% endschema %}

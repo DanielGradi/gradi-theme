@@ -1,0 +1,29 @@
+{% render 'heading'
+  heading: 1,
+  class: "h1",
+  content: cart.title
+%}
+
+{%- if cart.item_count != 0 -%}
+  {%- for item in cart.items -%}
+   <div class="cart-item"<>
+    <h1>
+      {{ item.title }}
+    </h1>
+    <h3>
+      {{ item.quantity }}
+    </h3>
+   </div>
+  {%- endfor -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Main collection",
+  "tag": "section",
+  "class": "main-collection wrapper",
+  "settings": [
+
+  ]
+}
+{% endschema %}
