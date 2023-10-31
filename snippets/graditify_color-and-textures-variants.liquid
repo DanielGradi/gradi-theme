@@ -1,0 +1,32 @@
+<!-- eslint-disable max-len -->
+{% style %}
+
+  {%- assign setting_color = settings.variant_color_textarea | newline_to_br | split: '<br />' -%}
+  {% for color in setting_color %}
+    {%- assign obj_color = color | split: ':' -%}
+    .option_{{ obj_color | first | handleize }} {
+      background-color: {{ obj_color | last }};
+    }
+  {% endfor %}
+
+  {% if settings.enable_texture_option %}
+    {%- assign setting_texture = settings.variant_images | newline_to_br | split: '<br />' %}
+
+    {% for image_url in setting_texture -%}
+      {%- assign obj_image = image_url | split: ':' -%}
+      {%- assign variant_name = obj_image | first | handleize -%}
+      {%- assign image_name = obj_image | last -%}
+
+      {% for image in product.media %}
+        {% if image.alt == image_name %}
+          {% assign imgUrl = image | image_url %}
+
+          .option_{{ variant_name }} {
+            background-image: url({{ imgUrl }});
+          }
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+
+{% endstyle %}
