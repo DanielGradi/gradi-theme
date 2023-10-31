@@ -1,0 +1,93 @@
+{% comment %}
+
+  Render sticky-variants
+    - button_submit: {Node - Capture} Button form
+  Usage:
+  {% render 'graditify_sticky-variants-component'
+    button_form: button_submit
+  %}
+
+  {% capture button_submit %}
+    <form
+      action="/cart/add"
+      class="add-cart-js add-product-cart form-product"
+      data-product="{{ product.id }}"
+    >
+      <input
+        type="hidden"
+        name="id"
+        value="{{ first_variant.id }}"
+        data-variant="{{ product.handle }}"
+      />
+      <button
+        class="btn btn-add-to-cart btn-cart-js"
+        type="submit"
+      >
+        {%- if available -%}
+          {{ 'products.product.add_to_cart' | t }}
+        {%- else -%}
+          {{ 'products.product.sold_out' | t }}
+        {%- endif -%}
+      </button>
+    </form>
+  {% endcapture %}
+
+{% endcomment %}
+
+<link
+  rel="stylesheet"
+  href="{{ 'graditify_sticky-variants.css' | asset_url }}"
+/>
+
+{% render 'graditify_color-and-textures-variants' %}
+
+{%-liquid
+  assign first_variant = product.selected_or_first_available_variant
+  assign available = first_variant.available
+-%}
+
+<sticky-variants
+  intersection-element=".main-product"
+  section-rendering=".main-product"
+  button-submit=".btn-cart-js"
+  variants-wrapper=".main-product__detail"
+  price-selector=".price-product-js"
+  media-query=""
+  images-change=""
+>
+    {% comment %}
+      Optional
+    {% endcomment %}
+    <div class="graditify_variants--images graditify-variants-images-js hidden">
+      <img
+        src="{{ product.selected_or_first_available_variant.featured_image
+          | default: product.featured_image | image_url }}"
+        alt="{{ product.selected_or_first_available_variant.featured_image.alt
+          | default: product.featured_image.alt }}"
+        loading="lazy"
+        width="100"
+        height="100"
+      />
+    </div>
+
+    {% comment %}
+      Optional
+    {% endcomment %}
+    {% render 'graditify_price', product: product %}
+
+    {% render 'graditify_variants-form'
+      product: product,
+      option_radio: 'Color',
+      show_variant: 'Color Material TamaC1o Services',
+      available: available
+    %}
+
+    {% if button_form %}
+      {{ button_form }}
+    {% endif %}
+</sticky-variants>
+
+<script
+  src="{{ 'graditify_sticky-variants.js' | asset_url }}"
+  defer="defer"
+></script>
